@@ -5,7 +5,8 @@ local Game = {
     sprites = nil,
     title = nil,
     bird = {
-        fps = 15,
+        fps = 10,
+        time = nil,
         activeFrame = 1,
         frames = {}
     }
@@ -22,6 +23,7 @@ function Game.init()
     Game.sprites = love.graphics.newImage("assets/drawables/sprites_sheet.png")
 
     Game.title = love.graphics.newQuad(1060, 10, 455, 132, Game.sprites:getDimensions())
+    Game.bird.time = 1 / Game.bird.fps
     Game.bird.frames[1] = love.graphics.newQuad(674, 0, 86, 61, Game.sprites:getDimensions())
     Game.bird.frames[2] = love.graphics.newQuad(674, 61, 86, 61, Game.sprites:getDimensions())
     Game.bird.frames[3] = love.graphics.newQuad(674, 122, 86, 61, Game.sprites:getDimensions())
