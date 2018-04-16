@@ -45,7 +45,7 @@ function love.draw()
 end
 
 function love.focus(focus)
-    Game.paused = not Game.paused
+    if focus == false then Game.paused = true end
 end
 
 function love.quit()
@@ -54,12 +54,14 @@ end
 
 -- Input handling
 function love.keypressed(key , scancode , isrepeat )
-    if key == 'space' then
+    if key == 'p' then
         if Game.started == false then
             Game.started = not Game.started
         else
             Game.paused = not Game.paused
         end
+    elseif key == 'space' then
+        Game.birdFly()
     elseif key == 'escape' then
         if Game.started == true then Game.started = false end
     end
@@ -74,5 +76,7 @@ function love.mousepressed(mx , my , button)
         end
     else
         -- Move the bird up
+
+        Game.birdFly()
     end
 end

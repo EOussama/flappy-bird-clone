@@ -68,4 +68,8 @@ function Game.switchSprites(current)
     end
 end
 
+function Game.birdFly()
+    if Game.paused == true then Game.paused = false end
+end
+
 return Game
