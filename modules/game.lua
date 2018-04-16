@@ -1,14 +1,32 @@
 local Game = {
     started = false,
-    background = nil,
-    floor = nil,
-    sprites = nil,
+    paused = false,
+    background = {
+        current = nil,
+        active = nil,
+        paused = nil
+    },
+    floor = {
+        current = nil,
+        active = nil,
+        paused = nil   
+    },
+    sprites = {
+        current = nil,
+        active = nil,
+        paused = nil   
+    },
     title = nil,
     bird = {
-        fps = 10,
+        fps = 15,
         time = nil,
         activeFrame = 1,
         frames = {}
+    },
+    buttons = {
+        play = nil,
+        board = nil,
+        pause = nil
     }
 }
 Game.__index = Game
@@ -18,27 +36,36 @@ function Game.init()
     love.graphics.setDefaultFilter("nearest", "nearest")
 
     Game.started = false
-    Game.background = love.graphics.newImage("assets/drawables/background.png")
-    Game.floor = love.graphics.newImage("assets/drawables/floor.png")
-    Game.sprites = love.graphics.newImage("assets/drawables/sprites_sheet.png")
+    Game.background.active = love.graphics.newImage("assets/drawables/background.png")
+    Game.background.paused = love.graphics.newImage("assets/drawables/background_paused.png")
+    Game.floor.active = love.graphics.newImage("assets/drawables/floor.png")
+    Game.floor.paused = love.graphics.newImage("assets/drawables/floor_paused.png")
+    Game.sprites.active = love.graphics.newImage("assets/drawables/sprites_sheet.png")
+    Game.sprites.paused = love.graphics.newImage("assets/drawables/sprites_sheet_paused.png")
 
-    Game.title = love.graphics.newQuad(1060, 10, 455, 132, Game.sprites:getDimensions())
+    Game.background.current = Game.background.active
+    Game.floor.current = Game.floor.active
+    Game.sprites.current = Game.sprites.active
+    Game.title = love.graphics.newQuad(1060, 10, 455, 132, Game.sprites.current:getDimensions())
     Game.bird.time = 1 / Game.bird.fps
-    Game.bird.frames[1] = love.graphics.newQuad(674, 0, 86, 61, Game.sprites:getDimensions())
-    Game.bird.frames[2] = love.graphics.newQuad(674, 61, 86, 61, Game.sprites:getDimensions())
-    Game.bird.frames[3] = love.graphics.newQuad(674, 122, 86, 61, Game.sprites:getDimensions())
+    Game.bird.frames[1] = love.graphics.newQuad(674, 0, 86, 61, Game.sprites.current:getDimensions())
+    Game.bird.frames[2] = love.graphics.newQuad(674, 61, 86, 61, Game.sprites.current:getDimensions())
+    Game.bird.frames[3] = love.graphics.newQuad(674, 122, 86, 61, Game.sprites.current:getDimensions())
+    Game.buttons.play = love.graphics.newQuad(459, 460, 272, 161, Game.sprites.current:getDimensions())
+    Game.buttons.board = love.graphics.newQuad(1562, 0, 272, 161, Game.sprites.current:getDimensions())
+    Game.buttons.pause = love.graphics.newQuad(760, 0, 285, 250, Game.sprites.current:getDimensions())
 end
 
-function Game.start()
-    print("Game started")
-end
-
-function Game.paused()
-    print("Game paused")
-end
-
-function Game.loss()
-    print("Game over")
+function Game.switchSprites(current)
+    if current == 'active' then
+        Game.background.current = Game.background.active
+        Game.floor.current = Game.floor.active
+        Game.sprites.current = Game.sprites.active
+    elseif current == 'paused' then
+        Game.background.current = Game.background.paused
+        Game.floor.current = Game.floor.paused
+        Game.sprites.current = Game.sprites.paused
+    end
 end
 
 return Game
