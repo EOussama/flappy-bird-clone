@@ -12,7 +12,7 @@
 
 
                                                         @Author:        Eoussama
-                                                        @Version:       v0.1
+                                                        @Version:       v0.1.0
                                                         @Created on:    4/15/2018 - 9:26PM
 ]]
 local Game = require("modules/game")
@@ -54,12 +54,8 @@ end
 
 -- Input handling
 function love.keypressed(key , scancode , isrepeat )
-    if key == 'p' then
-        if Game.started == false then
-            Game.started = not Game.started
-        else
-            Game.paused = not Game.paused
-        end
+    if key == 'p' then        
+        Game.paused = not Game.paused
     elseif key == 'space' then
         Game.birdFly()
     elseif key == 'escape' then
