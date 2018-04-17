@@ -68,6 +68,7 @@ function love.keypressed(key , scancode , isrepeat )
         end
     elseif key == 'space' then
         if Game.started == false and Game.getstarted.state == false then
+            Menu.showMainMenu()
             Game.getstarted.state = true
         elseif Game.started == true and Game.getstarted.state == false then
             Game.birdFly()

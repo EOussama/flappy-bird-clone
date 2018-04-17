@@ -61,9 +61,9 @@ local Game = {
     pipes = {
         ceil = nil,
         floor = nil
-    }
+    },
     bird = {
-        posX = love.graphics.getWidth() / 3,
+        posX = love.graphics.getWidth() / 2,
         posY = love.graphics.getHeight() / 2.6,
         fps = 10,
         time = 1 / 10,
@@ -94,6 +94,7 @@ Game.__index = Game
 -- Functions
 function Game.init()
     -- Settings
+    love.physics.setMeter(64)
     love.graphics.setDefaultFilter("nearest", "nearest")
 
     -- Resources
@@ -117,10 +118,10 @@ function Game.init()
     Game.floor.physics.body = love.physics.newBody(Game.floor.physics.world, love.graphics:getWidth() / 2, love.graphics:getHeight(), 'static')
     Game.floor.physics.shape = love.physics.newRectangleShape(Game.floor.current:getWidth(), 210)
     Game.floor.physics.fixture = love.physics.newFixture(Game.floor.physics.body, Game.floor.physics.shape, 1)
-
+    
     Game.ceilling.physics.world = Game.physicsWorld
     Game.ceilling.physics.body = love.physics.newBody(Game.ceilling.physics.world, love.graphics:getWidth() / 2, 0, 'static')
-    Game.ceilling.physics.shape = love.physics.newRectangleShape(love.graphics:getWidth(), 50)
+    Game.ceilling.physics.shape = love.physics.newRectangleShape(love.graphics:getWidth(), 100)
     Game.ceilling.physics.fixture = love.physics.newFixture(Game.ceilling.physics.body, Game.ceilling.physics.shape, 1)
 
     Game.bird.physics.world = Game.physicsWorld
@@ -173,7 +174,7 @@ function Game.birdFly()
         Game.paused = false
     else
         Game.bird.physics.body = love.physics.newBody(Game.bird.physics.world, Game.bird.posX, Game.bird.posY, 'dynamic')
-        Game.bird.physics.body:applyLinearImpulse(0, -200)
+        Game.bird.physics.body:applyLinearImpulse(0, -300)
         Game.bird.swing = true
     end
 end

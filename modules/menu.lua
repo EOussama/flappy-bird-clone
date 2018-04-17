@@ -28,26 +28,9 @@ function Menu.showMainMenu()
     Game.bird.activeFrame = 1
     Game.bird.posX = love.graphics.getWidth() / 2
     Game.bird.posY = love.graphics.getHeight() / 2.6
-    Game.floor.floorX = 0.0
-
-    Game.physicsWorld = love.physics.newWorld(0, 9.81*64, true)
-    Game.floor.physics.world = Game.physicsWorld
-    Game.floor.physics.body = love.physics.newBody(Game.floor.physics.world, love.graphics:getWidth() / 2, love.graphics:getHeight(), 'static')
-    Game.floor.physics.shape = love.physics.newRectangleShape(Game.floor.current:getWidth(), 210)
-    Game.floor.physics.fixture = love.physics.newFixture(Game.floor.physics.body, Game.floor.physics.shape, 1)
-
-    Game.ceilling.physics.world = Game.physicsWorld
-    Game.ceilling.physics.body = love.physics.newBody(Game.ceilling.physics.world, love.graphics:getWidth() / 2, 0, 'static')
-    Game.ceilling.physics.shape = love.physics.newRectangleShape(love.graphics:getWidth(), 50)
-    Game.ceilling.physics.fixture = love.physics.newFixture(Game.ceilling.physics.body, Game.ceilling.physics.shape, 1)
-
-    Game.bird.physics.world = Game.physicsWorld
-    Game.bird.physics.body = love.physics.newBody(Game.bird.physics.world, Game.bird.posX, Game.bird.posY, 'dynamic')
-    Game.bird.physics.shape = love.physics.newCircleShape(50)
-    Game.bird.physics.fixture = love.physics.newFixture(Game.bird.physics.body, Game.bird.physics.shape, 1)
-    Game.bird.physics.fixture:setRestitution(0.3)
     Game.bird.physics.body:setX(Game.bird.posX)
     Game.bird.physics.body:setY(Game.bird.posY)
+    Game.floor.floorX = 0.0
 
     Game.draw()
     love.graphics.draw(Game.sprites.current, Game.title, love.graphics.getWidth() / 2, love.graphics.getHeight() / 5, 0, 0.4, 0.4, ({Game.title:getViewport()})[3] / 2, ({Game.title:getViewport()})[4] / 2)
