@@ -12,67 +12,85 @@
 
 
                                                         @Author:        Eoussama
-                                                        @Version:       v0.1.0
+                                                        @Version:       v0.2.0
                                                         @Created on:    4/15/2018 - 9:26PM
 ]]
-local Game = require("modules/game")
-local Menu = require("modules/menu")
+local Game = require("modules.game")
+local Menu = require("modules.menu")
 
 function love.load()
     Game.init()
 end
 
 function love.update(dt)
+    if Game.getstarted.state == true then Game.getStarted(dt) return nil end
     if Game.started == false then return nil end
     if Game.paused == true then Game.switchSprites('paused') return nil else Game.switchSprites('active') end
+    if Game.bird.posY >= 544 then Game.lost = true return nil end
+    if Game.lost == true then return nil end
+    if Game.floor.floorX <= -30.0 then Game.floor.floorX = 0.0 end
+    Game.floor.floorX = Game.floor.floorX - 0.1
+    Game.physicsWorld:update(dt)
 
     Game.bird.time = Game.bird.time - dt
     if Game.bird.time <= 0 then
         Game.bird.time = 1 / Game.bird.fps
-
-        if Game.bird.activeFrame == 3 then Game.bird.activeFrame = 1 end
-        Game.bird.activeFrame = Game.bird.activeFrame + 1
+        if Game.bird.swing == true then
+            Game.bird.activeFrame = Game.bird.activeFrame + 1
+            if Game.bird.activeFrame == 4 then
+                Game.bird.activeFrame = 1
+                Game.bird.swing = false
+            end
+        end
     end
 end
 
 function love.draw()
-    love.graphics.draw(Game.background.current, 0, -Game.floor.current:getHeight() / 10)
-    love.graphics.draw(Game.floor.current, 0, love.graphics.getHeight() - Game.floor.current:getHeight() / 2, 0, 0.5, 0.5)
-    love.graphics.draw(Game.sprites.current, Game.bird.frames[Game.bird.activeFrame], love.graphics.getWidth() / 2, love.graphics.getHeight() / 2.6, 0, 0.6, 0.6, ({Game.bird.frames[Game.bird.activeFrame]:getViewport()})[3] / 2, ({Game.bird.frames[Game.bird.activeFrame]:getViewport()})[4] / 2)
+    Game.draw()
 
-    if Game.started == false then Menu.showMainMenu() end
+    if Game.started == false and Game.getstarted.state == false then Menu.showMainMenu() end
+    if Game.getstarted.state == true then Menu.showGetStartedMenu() return nil end
     if Game.started == true and Game.paused == true then Menu.showPauseMenu() end
+    if Game.lost == true then Menu.showLossMenu() end
 end
 
 function love.focus(focus)
-    if focus == false then Game.paused = true end
-end
-
-function love.quit()
-    print("Game ended!")
+    if Game.lost == false and Game.started == true and Game.getstarted.state == false then
+        if focus == false then Game.paused = true end
+    end
 end
 
 -- Input handling
 function love.keypressed(key , scancode , isrepeat )
-    if key == 'p' then        
-        Game.paused = not Game.paused
+    if key == 'p' then
+        if Game.lost == false and Game.started == true and Game.getstarted.state == false then
+            Game.paused = not Game.paused
+        end
     elseif key == 'space' then
-        Game.birdFly()
+        if Game.started == false and Game.getstarted.state == false then
+            Game.getstarted.state = true
+        elseif Game.started == true and Game.getstarted.state == false then
+            Game.birdFly()
+        end
     elseif key == 'escape' then
-        if Game.started == true then Game.started = false end
+        if Game.started == true then
+            Game.started = false
+        elseif Game.getstarted.state == true then
+            Game.getstarted.state = false
+            Game.started = false
+        end
     end
 end
 
 function love.mousepressed(mx , my , button)
-    if Game.started == false and button == 1 then
+    if (Game.started == false or Game.lost == true) and Game.getstarted.state == false and button == 1 then
         if (mx >= 59 and mx < 142) and (my >= 447 and my < 493) then
-            Game.started = true
+            Menu.showMainMenu()
+            Game.getstarted.state = true
         elseif (mx >= 259 and mx < 642) and (my >= 447 and my < 493) then
             -- Board button
         end
-    else
-        -- Move the bird up
-
+    elseif Game.started == true and button == 1 and Game.getstarted.state == false then
         Game.birdFly()
     end
 end
