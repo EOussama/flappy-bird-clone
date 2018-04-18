@@ -23,23 +23,23 @@ function love.load()
 end
 
 function love.update(dt)
-    if Game.getstarted.state == true then Game.getStarted(dt) return nil end
-    if Game.started == false then return nil end
-    if Game.paused == true then Game.switchSprites('paused') return nil else Game.switchSprites('active') end
-    if Game.bird.posY >= 544 then Game.lost = true return nil end
-    if Game.lost == true then return nil end
-    if Game.floor.floorX <= -30.0 then Game.floor.floorX = 0.0 end
-    Game.floor.floorX = Game.floor.floorX - 0.1
-    Game.physicsWorld:update(dt)
+    if Game.conf.getstarted.state == true then Game.getStarted(dt) return nil end
+    if Game.conf.started == false then return nil end
+    if Game.conf.paused == true then Game.switchSprites('paused') return nil else Game.switchSprites('active') end
+    if Game.quads.bird.posY >= 544 then Game.conf.lost = true return nil end
+    if Game.conf.lost == true then return nil end
+    if Game.assets.drawables.floor.posX <= -30.0 then Game.assets.drawables.floor.posX = 0.0 end
+    Game.assets.drawables.floor.posX = Game.assets.drawables.floor.posX - 0.1
+    Game.physics.physicsWorld:update(dt)
 
-    Game.bird.time = Game.bird.time - dt
-    if Game.bird.time <= 0 then
-        Game.bird.time = 1 / Game.bird.fps
-        if Game.bird.swing == true then
-            Game.bird.activeFrame = Game.bird.activeFrame + 1
-            if Game.bird.activeFrame == 4 then
-                Game.bird.activeFrame = 1
-                Game.bird.swing = false
+    Game.quads.bird.time = Game.quads.bird.time - dt
+    if Game.quads.bird.time <= 0 then
+        Game.quads.bird.time = 1 / Game.quads.bird.fps
+        if Game.quads.bird.swing == true then
+            Game.quads.bird.activeFrame = Game.quads.bird.activeFrame + 1
+            if Game.quads.bird.activeFrame == 4 then
+                Game.quads.bird.activeFrame = 1
+                Game.quads.bird.swing = false
             end
         end
     end
@@ -48,50 +48,50 @@ end
 function love.draw()
     Game.draw()
 
-    if Game.started == false and Game.getstarted.state == false then Menu.showMainMenu() end
-    if Game.getstarted.state == true then Menu.showGetStartedMenu() return nil end
-    if Game.started == true and Game.paused == true then Menu.showPauseMenu() end
-    if Game.lost == true then Menu.showLossMenu() end
+    if Game.conf.started == false and Game.conf.getstarted.state == false then Menu.showMainMenu() end
+    if Game.conf.getstarted.state == true then Menu.showGetStartedMenu() return nil end
+    if Game.conf.started == true and Game.conf.paused == true then Menu.showPauseMenu() end
+    if Game.conf.lost == true then Menu.showLossMenu() end
 end
 
 function love.focus(focus)
-    if Game.lost == false and Game.started == true and Game.getstarted.state == false then
-        if focus == false then Game.paused = true end
+    if Game.conf.lost == false and Game.conf.started == true and Game.conf.getstarted.state == false then
+        if focus == false then Game.conf.paused = true end
     end
 end
 
 -- Input handling
 function love.keypressed(key , scancode , isrepeat )
     if key == 'p' then
-        if Game.lost == false and Game.started == true and Game.getstarted.state == false then
-            Game.paused = not Game.paused
+        if Game.conf.lost == false and Game.conf.started == true and Game.conf.getstarted.state == false then
+            Game.conf.paused = not Game.conf.paused
         end
     elseif key == 'space' then
-        if Game.started == false and Game.getstarted.state == false then
+        if Game.conf.started == false and Game.conf.getstarted.state == false then
             Menu.showMainMenu()
-            Game.getstarted.state = true
-        elseif Game.started == true and Game.getstarted.state == false then
+            Game.conf.getstarted.state = true
+        elseif Game.conf.started == true and Game.conf.getstarted.state == false then
             Game.birdFly()
         end
     elseif key == 'escape' then
-        if Game.started == true then
-            Game.started = false
-        elseif Game.getstarted.state == true then
-            Game.getstarted.state = false
-            Game.started = false
+        if Game.conf.started == true then
+            Game.conf.started = false
+        elseif Game.conf.getstarted.state == true then
+            Game.conf.getstarted.state = false
+            Game.conf.started = false
         end
     end
 end
 
 function love.mousepressed(mx , my , button)
-    if (Game.started == false or Game.lost == true) and Game.getstarted.state == false and button == 1 then
+    if (Game.conf.started == false or Game.conf.lost == true) and Game.conf.getstarted.state == false and button == 1 then
         if (mx >= 59 and mx < 142) and (my >= 447 and my < 493) then
             Menu.showMainMenu()
-            Game.getstarted.state = true
+            Game.conf.getstarted.state = true
         elseif (mx >= 259 and mx < 642) and (my >= 447 and my < 493) then
             -- Board button
         end
-    elseif Game.started == true and button == 1 and Game.getstarted.state == false then
+    elseif Game.conf.started == true and button == 1 and Game.conf.getstarted.state == false then
         Game.birdFly()
     end
 end
