@@ -17,7 +17,7 @@
 ]]
 local Game = {
     constants = {
-        getstarted_time = 1,
+        getstarted_time = 3,
         pixels_per_meter = 64,
         gravity = 9.81,
     },
@@ -100,7 +100,12 @@ local Game = {
         },
         pipes = {
             ceil = nil,
-            floor = nil
+            floor = nil,
+            pps = nil,
+            pos = {
+                X,
+                Y
+            }
         }
     },
 }
@@ -163,6 +168,10 @@ function Game.init()
     Game.quads.pipes.ceil = love.graphics.newQuad(10, 478, 130, 801, Game.assets.drawables.sprites.current:getDimensions())
     Game.quads.pipes.floor = love.graphics.newQuad(160, 188, 130, 801, Game.assets.drawables.sprites.current:getDimensions())
 
+    if math.random() == 0 then Game.quads.pipes.pps = Game.quads.pipes.floor else Game.quads.pipes.pps = Game.quads.pipes.ceil end
+    Game.quads.pipes.pos.Y = 500
+    Game.quads.pipes.pos.X = love.graphics:getWidth() + ({Game.quads.pipes.pps:getViewport()})[3] / 2
+
     Game.quads.interface.numbers[0] = love.graphics.newQuad(1019, 300, 60, 91, Game.assets.drawables.sprites.current:getDimensions())
     Game.quads.interface.numbers[1] = love.graphics.newQuad(1080, 300, 60, 91, Game.assets.drawables.sprites.current:getDimensions())
     Game.quads.interface.numbers[2] = love.graphics.newQuad(1140, 300, 60, 91, Game.assets.drawables.sprites.current:getDimensions())
@@ -213,8 +222,9 @@ function Game.draw()
     Game.quads.bird.posY = Game.quads.bird.physics.body:getY()
 
     love.graphics.draw(Game.assets.drawables.background.current, 0, -Game.assets.drawables.floor.current:getHeight() / 10)
-    love.graphics.draw(Game.assets.drawables.floor.current, Game.assets.drawables.floor.posX, love.graphics.getHeight() - Game.assets.drawables.floor.current:getHeight() / 2, 0, 0.5, 0.5)
     love.graphics.draw(Game.assets.drawables.sprites.current, Game.quads.bird.frames[Game.quads.bird.activeFrame], Game.quads.bird.posX, Game.quads.bird.posY, 0, 0.6, 0.6, ({Game.quads.bird.frames[Game.quads.bird.activeFrame]:getViewport()})[3] / 2, ({Game.quads.bird.frames[Game.quads.bird.activeFrame]:getViewport()})[4] / 2)
+    love.graphics.draw(Game.assets.drawables.sprites.current, Game.quads.pipes.pps, Game.quads.pipes.pos.X, Game.quads.pipes.pos.Y, 0, 0.5, 0.5, ({Game.quads.pipes.pps:getViewport()})[3]/2, ({Game.quads.pipes.pps:getViewport()})[4]/2)
+    love.graphics.draw(Game.assets.drawables.floor.current, Game.assets.drawables.floor.posX, love.graphics.getHeight() - Game.assets.drawables.floor.current:getHeight() / 2, 0, 0.5, 0.5)
 end
 
 return Game

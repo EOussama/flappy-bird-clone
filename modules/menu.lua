@@ -31,6 +31,7 @@ function Menu.showMainMenu()
     Game.quads.bird.physics.body:setX(Game.quads.bird.posX)
     Game.quads.bird.physics.body:setY(Game.quads.bird.posY)
     Game.assets.drawables.floor.posX = 0.0
+    Game.quads.pipes.pos.X = love.graphics:getWidth() + ({Game.quads.pipes.pps:getViewport()})[3] / 2
 
     Game.draw()
     love.graphics.draw(Game.assets.drawables.sprites.current, Game.quads.interface.title, love.graphics.getWidth() / 2, love.graphics.getHeight() / 5, 0, 0.4, 0.4, ({Game.quads.interface.title:getViewport()})[3] / 2, ({Game.quads.interface.title:getViewport()})[4] / 2)

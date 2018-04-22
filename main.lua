@@ -29,8 +29,11 @@ function love.update(dt)
     if Game.quads.bird.posY >= 544 then Game.conf.lost = true return nil end
     if Game.conf.lost == true then return nil end
     if Game.assets.drawables.floor.posX <= -30.0 then Game.assets.drawables.floor.posX = 0.0 end
-    Game.assets.drawables.floor.posX = Game.assets.drawables.floor.posX - 0.1
+    Game.assets.drawables.floor.posX = Game.assets.drawables.floor.posX - 0.3
     Game.physics.physicsWorld:update(dt)
+
+    if Game.quads.pipes.pos.X < -({Game.quads.pipes.pps:getViewport()})[3] then Game.quads.pipes.pos.X = love.graphics:getWidth() + ({Game.quads.pipes.pps:getViewport()})[3] / 2 end
+    Game.quads.pipes.pos.X = Game.quads.pipes.pos.X - 0.3
 
     Game.quads.bird.time = Game.quads.bird.time - dt
     if Game.quads.bird.time <= 0 then
