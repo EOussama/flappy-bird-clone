@@ -20,7 +20,7 @@
 function love.conf(t)
     -- Love2D configuration
     t.version = '11.0'
-    t.console = true
+    --t.console = true
 
     -- Game information
     t.window.title = "Flappy Bird clone"
