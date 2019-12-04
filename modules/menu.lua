@@ -1,19 +1,19 @@
 --[[
-                                                       
-                                    ______ _                           ____  _         _        _                  
-                                    |  ____| |                         |  _ \(_)       | |      | |                 
-                                    | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |   ___| | ___  _ __   ___ 
-                                    |  __| | |/ _` | '_ \| '_ \| | | | |  _ <| | '__/ _` |  / __| |/ _ \| '_ \ / _ \
-                                    | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| | | (__| | (_) | | | |  __/
-                                    |_|    |_|\__,_| .__/| .__/ \__, | |____/|_|_|  \__,_|  \___|_|\___/|_| |_|\___|
-                                                    | |   | |     __/ |                                              
-                                                    |_|   |_|    |___/                                               
+                        
+    ______ _                           ____  _         _        _                  
+    |  ____| |                         |  _ \(_)       | |      | |                 
+    | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |   ___| | ___  _ __   ___ 
+    |  __| | |/ _` | '_ \| '_ \| | | | |  _ <| | '__/ _` |  / __| |/ _ \| '_ \ / _ \
+    | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| | | (__| | (_) | | | |  __/
+    |_|    |_|\__,_| .__/| .__/ \__, | |____/|_|_|  \__,_|  \___|_|\___/|_| |_|\___|
+                    | |   | |     __/ |                                              
+                    |_|   |_|    |___/                                               
 
 
 
-                                                        @Author:        Eoussama
-                                                        @Version:       v0.2.0
-                                                        @Created on:    4/15/2018 - 9:26PM
+                        @Author:        Eoussama
+                        @Version:       v0.2.0
+                        @Created on:    4/15/2018 - 9:26PM
 ]]
 local Menu = {}
 local Game = require("modules.game")
@@ -53,7 +53,11 @@ end
 
 function Menu.showLossMenu()
     Game.conf.lost = true
-    if Game.conf.played == false then Game.assets.sounds.lost:play() Game.conf.played = true end
+    
+    if Game.conf.played == false then
+        Game.assets.sounds.lost:play()
+        Game.conf.played = true
+    end
     
     love.graphics.draw(Game.assets.drawables.sprites.active, Game.quads.interface.gameOver, love.graphics.getWidth() / 2, love.graphics.getHeight() / 5, 0, 0.4, 0.4, ({Game.quads.interface.title:getViewport()})[3] / 2, ({Game.quads.interface.title:getViewport()})[4] / 2)
     love.graphics.draw(Game.assets.drawables.sprites.active, Game.quads.interface.scoreBoard, love.graphics.getWidth() / 2, love.graphics.getHeight() / 3, 0, 0.4, 0.4, ({Game.quads.interface.gameOver:getViewport()})[3] / 2, ({Game.quads.interface.gameOver:getViewport()})[4] / 2)

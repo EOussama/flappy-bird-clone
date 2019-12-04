@@ -1,20 +1,21 @@
 --[[
-                                                       
-                                    ______ _                           ____  _         _        _                  
-                                    |  ____| |                         |  _ \(_)       | |      | |                 
-                                    | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |   ___| | ___  _ __   ___ 
-                                    |  __| | |/ _` | '_ \| '_ \| | | | |  _ <| | '__/ _` |  / __| |/ _ \| '_ \ / _ \
-                                    | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| | | (__| | (_) | | | |  __/
-                                    |_|    |_|\__,_| .__/| .__/ \__, | |____/|_|_|  \__,_|  \___|_|\___/|_| |_|\___|
-                                                    | |   | |     __/ |                                              
-                                                    |_|   |_|    |___/                                               
+                                                        
+    ______ _                           ____  _         _        _                  
+    |  ____| |                         |  _ \(_)       | |      | |                 
+    | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |   ___| | ___  _ __   ___ 
+    |  __| | |/ _` | '_ \| '_ \| | | | |  _ <| | '__/ _` |  / __| |/ _ \| '_ \ / _ \
+    | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| | | (__| | (_) | | | |  __/
+    |_|    |_|\__,_| .__/| .__/ \__, | |____/|_|_|  \__,_|  \___|_|\___/|_| |_|\___|
+                    | |   | |     __/ |                                              
+                    |_|   |_|    |___/                                               
 
 
 
-                                                        @Author:        Eoussama
-                                                        @Version:       v0.2.0
-                                                        @Created on:    4/15/2018 - 9:26PM
+                        @Author:        Eoussama
+                        @Version:       v0.2.0
+                        @Created on:    4/15/2018 - 9:26PM
 ]]
+
 local Game = require("modules.game")
 local Menu = require("modules.menu")
 
@@ -23,17 +24,20 @@ function love.load()
 end
 
 function love.update(dt)
+
+    speed = 1
+
     if Game.conf.getstarted.state == true then Game.getStarted(dt) return nil end
     if Game.conf.started == false then return nil end
     if Game.conf.paused == true then Game.switchSprites('paused') return nil else Game.switchSprites('active') end
     if Game.quads.bird.posY >= 544 then Game.conf.lost = true return nil end
     if Game.conf.lost == true then return nil end
     if Game.assets.drawables.floor.posX <= -30.0 then Game.assets.drawables.floor.posX = 0.0 end
-    Game.assets.drawables.floor.posX = Game.assets.drawables.floor.posX - 0.3
+    Game.assets.drawables.floor.posX = Game.assets.drawables.floor.posX - speed
     Game.physics.physicsWorld:update(dt)
 
     if Game.quads.pipes.pos.X < -({Game.quads.pipes.pps:getViewport()})[3] then Game.quads.pipes.pos.X = love.graphics:getWidth() + ({Game.quads.pipes.pps:getViewport()})[3] / 2 end
-    Game.quads.pipes.pos.X = Game.quads.pipes.pos.X - 0.3
+    Game.quads.pipes.pos.X = Game.quads.pipes.pos.X - speed
 
     Game.quads.bird.time = Game.quads.bird.time - dt
     if Game.quads.bird.time <= 0 then
@@ -64,7 +68,7 @@ function love.focus(focus)
 end
 
 -- Input handling
-function love.keypressed(key , scancode , isrepeat )
+function love.keypressed(key, scancode, isrepeat)
     if key == 'p' then
         if Game.conf.lost == false and Game.conf.started == true and Game.conf.getstarted.state == false then
             Game.conf.paused = not Game.conf.paused

@@ -1,19 +1,19 @@
 --[[
-                                                       
-                                    ______ _                           ____  _         _        _                  
-                                    |  ____| |                         |  _ \(_)       | |      | |                 
-                                    | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |   ___| | ___  _ __   ___ 
-                                    |  __| | |/ _` | '_ \| '_ \| | | | |  _ <| | '__/ _` |  / __| |/ _ \| '_ \ / _ \
-                                    | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| | | (__| | (_) | | | |  __/
-                                    |_|    |_|\__,_| .__/| .__/ \__, | |____/|_|_|  \__,_|  \___|_|\___/|_| |_|\___|
-                                                    | |   | |     __/ |                                              
-                                                    |_|   |_|    |___/                                               
+                        
+    ______ _                           ____  _         _        _                  
+    |  ____| |                         |  _ \(_)       | |      | |                 
+    | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |   ___| | ___  _ __   ___ 
+    |  __| | |/ _` | '_ \| '_ \| | | | |  _ <| | '__/ _` |  / __| |/ _ \| '_ \ / _ \
+    | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| | | (__| | (_) | | | |  __/
+    |_|    |_|\__,_| .__/| .__/ \__, | |____/|_|_|  \__,_|  \___|_|\___/|_| |_|\___|
+                    | |   | |     __/ |                                              
+                    |_|   |_|    |___/                                               
 
 
 
-                                                        @Author:        Eoussama
-                                                        @Version:       v0.2.0
-                                                        @Created on:    4/15/2018 - 9:26PM
+                        @Author:        Eoussama
+                        @Version:       v0.2.0
+                        @Created on:    4/15/2018 - 9:26PM
 ]]
 local Game = {
     constants = {
@@ -206,13 +206,15 @@ function Game.birdFly()
 end
 
 function Game.getStarted(dt)
+
     Game.conf.getstarted.time = Game.conf.getstarted.time - dt
+
     if Game.conf.getstarted.time <= 0 then
         Game.conf.getstarted.time = Game.constants.getstarted_time
         
         Game.conf.getstarted.state = false
         Game.conf.started = true
-
+        
         Game.quads.bird.physics.body:applyLinearImpulse(-1, 0)
     end
 end
